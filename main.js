@@ -1,5 +1,4 @@
 import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
 
 const canvas = document.getElementById("scene");
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -9,12 +8,6 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0b1422);
 
 const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-controls.enablePan = true;
-controls.target.set(0, 0, 0);
 
 const geometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
 const material = new THREE.MeshStandardMaterial({
@@ -116,7 +109,7 @@ function updateCamera() {
   const cy = Number(inputs.cy.value);
   const cz = Number(inputs.cz.value);
   camera.position.set(cx, cy, cz);
-  controls.update();
+  camera.lookAt(0, 0, 0);
 }
 
 function updatePerspective() {
@@ -146,7 +139,6 @@ function resize() {
 
 function tick() {
   resize();
-  controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
 }
