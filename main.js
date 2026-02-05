@@ -15,6 +15,7 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.enablePan = true;
 controls.target.set(0, 0, 0);
+controls.maxDistance = 40;
 
 const geometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
 const material = new THREE.MeshStandardMaterial({
@@ -147,6 +148,13 @@ function resize() {
 function tick() {
   resize();
   controls.update();
+  const distance = camera.position.length();
+  if (distance > camera.far * 0.9) {
+    camera.far = Math.min(200, Math.max(camera.far, distance * 1.5));
+    inputs.far.value = camera.far.toFixed(0);
+    syncLabels();
+    camera.updateProjectionMatrix();
+  }
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
 }
